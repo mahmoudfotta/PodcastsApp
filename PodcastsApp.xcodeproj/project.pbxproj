@@ -14,6 +14,7 @@
 		2AF686B4213C085C00223FDA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AF686B2213C085C00223FDA /* LaunchScreen.storyboard */; };
 		2AF686BF213C085D00223FDA /* PodcastsAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686BE213C085D00223FDA /* PodcastsAppTests.swift */; };
 		2AF686CA213C085D00223FDA /* PodcastsAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686C9213C085D00223FDA /* PodcastsAppUITests.swift */; };
+		2AF686D8213C098F00223FDA /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686D7213C098F00223FDA /* MainTabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		2AF686C5213C085D00223FDA /* PodcastsAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PodcastsAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AF686C9213C085D00223FDA /* PodcastsAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsAppUITests.swift; sourceTree = "<group>"; };
 		2AF686CB213C085D00223FDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2AF686D7213C098F00223FDA /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				2AF686B0213C085C00223FDA /* Assets.xcassets */,
 				2AF686B2213C085C00223FDA /* LaunchScreen.storyboard */,
 				2AF686B5213C085C00223FDA /* Info.plist */,
+				2AF686D7213C098F00223FDA /* MainTabBarController.swift */,
 			);
 			path = PodcastsApp;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			files = (
 				2AF686AC213C084800223FDA /* ViewController.swift in Sources */,
 				2AF686AA213C084800223FDA /* AppDelegate.swift in Sources */,
+				2AF686D8213C098F00223FDA /* MainTabBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +435,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TYLGLUFFXF;
 				INFOPLIST_FILE = PodcastsApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -448,6 +453,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TYLGLUFFXF;
 				INFOPLIST_FILE = PodcastsApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
