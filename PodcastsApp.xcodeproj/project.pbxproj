@@ -15,6 +15,8 @@
 		2AF686BF213C085D00223FDA /* PodcastsAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686BE213C085D00223FDA /* PodcastsAppTests.swift */; };
 		2AF686CA213C085D00223FDA /* PodcastsAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686C9213C085D00223FDA /* PodcastsAppUITests.swift */; };
 		2AF686D8213C098F00223FDA /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686D7213C098F00223FDA /* MainTabBarController.swift */; };
+		2AF686DB213C214000223FDA /* PodcastsSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686DA213C214000223FDA /* PodcastsSearchController.swift */; };
+		2AF686DE213C221400223FDA /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF686DD213C221400223FDA /* Podcast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		2AF686C9213C085D00223FDA /* PodcastsAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsAppUITests.swift; sourceTree = "<group>"; };
 		2AF686CB213C085D00223FDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2AF686D7213C098F00223FDA /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		2AF686DA213C214000223FDA /* PodcastsSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastsSearchController.swift; sourceTree = "<group>"; };
+		2AF686DD213C221400223FDA /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,8 @@
 		2AF686A8213C084800223FDA /* PodcastsApp */ = {
 			isa = PBXGroup;
 			children = (
+				2AF686DC213C21F300223FDA /* Models */,
+				2AF686D9213C20FF00223FDA /* Controllers */,
 				2AF686A9213C084800223FDA /* AppDelegate.swift */,
 				2AF686AB213C084800223FDA /* ViewController.swift */,
 				2AF686AD213C084800223FDA /* Main.storyboard */,
@@ -126,6 +132,22 @@
 				2AF686CB213C085D00223FDA /* Info.plist */,
 			);
 			path = PodcastsAppUITests;
+			sourceTree = "<group>";
+		};
+		2AF686D9213C20FF00223FDA /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2AF686DA213C214000223FDA /* PodcastsSearchController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2AF686DC213C21F300223FDA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2AF686DD213C221400223FDA /* Podcast.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,9 +281,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AF686DB213C214000223FDA /* PodcastsSearchController.swift in Sources */,
 				2AF686AC213C084800223FDA /* ViewController.swift in Sources */,
 				2AF686AA213C084800223FDA /* AppDelegate.swift in Sources */,
 				2AF686D8213C098F00223FDA /* MainTabBarController.swift in Sources */,
+				2AF686DE213C221400223FDA /* Podcast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
