@@ -21,6 +21,8 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
         super.viewDidLoad()
         setupTableView()
         setupSearchBar()
+        
+        searchBar(searchController.searchBar, textDidChange: "voong")
     }
     
     //MARK:- setup work
