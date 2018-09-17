@@ -30,15 +30,33 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    @IBOutlet weak var miniPlayerView: UIView!
+    @IBOutlet weak var maximizedStackView: UIStackView!
+    
+    @IBOutlet weak var miniTitleLabel: UILabel!
+    @IBOutlet weak var miniEpisodeImageView: UIImageView!
+    @IBOutlet weak var miniFastForwardBtn: UIButton! {
+        didSet {
+            miniFastForwardBtn.imageView?.contentMode = .scaleAspectFit
+        }
+    }
+    @IBOutlet weak var miniPlayPauseBtn: UIButton! {
+        didSet {
+            miniPlayPauseBtn.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+            miniPlayPauseBtn.imageView?.contentMode = .scaleAspectFit
+        }
+    }
+    
     var episode: Episode! {
         didSet {
             titleLabel.text = episode.title
             authorLabel.text = episode.author
-            
+            miniTitleLabel.text = episode.title
             playEpisode()
             
             guard let url = URL(string: episode.imageUrl ?? "") else {return}
             episodeImageView.sd_setImage(with: url, completed: nil)
+            miniEpisodeImageView.sd_setImage(with: url, completed: nil)
         }
     }
     
@@ -50,13 +68,13 @@ class PlayerDetailsView: UIView {
     
     fileprivate func observePlayerCurrentTime() {
         let interval = CMTimeMake(1, 2)
-        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { (time) in
-            self.currentTimeLabel.text = time.toDisplayString()
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
+            self?.currentTimeLabel.text = time.toDisplayString()
             
-            let durationTime = self.player.currentItem?.duration
-            self.durationLabel.text = durationTime?.toDisplayString()
+            let durationTime = self?.player.currentItem?.duration
+            self?.durationLabel.text = durationTime?.toDisplayString()
             
-            self.updateCurrentTimeSlider()
+            self?.updateCurrentTimeSlider()
             
         }
     }
@@ -68,15 +86,64 @@ class PlayerDetailsView: UIView {
         currentTimeSlider.value = Float(percantage)
     }
     
+    var panGesture: UIPanGestureRecognizer!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
+        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        addGestureRecognizer(panGesture)
         observePlayerCurrentTime()
         
         let time = CMTimeMake(1, 3)
         let times = [NSValue(time: time)]
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-            self.enlargeEpisodeImageView()
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.enlargeEpisodeImageView()
         }
+    }
+    
+    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .changed {
+            handlePanChanged(gesture: gesture)
+        } else if gesture.state == .ended {
+            handlePanEnded(gesture: gesture)
+        }
+    }
+    
+    func handlePanChanged(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self.superview)
+        self.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        self.miniPlayerView.alpha = 1 + translation.y / 200
+        self.maximizedStackView.alpha = -translation.y / 200
+    }
+    
+    func handlePanEnded(gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self.superview)
+        let velocity = gesture.velocity(in: self.superview)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.transform = .identity
+            
+            if translation.y < -200 || velocity.y < -500 {
+                let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+                mainTabBar?.maximizeDetailsView(episode: nil)
+                gesture.isEnabled = false
+            } else {
+                self.miniPlayerView.alpha = 1
+                self.maximizedStackView.alpha = 0
+            }
+        })
+    }
+    
+    @objc func handleTapMaximize() {
+        let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBar?.maximizeDetailsView(episode: nil)
+        panGesture.isEnabled = false
+    }
+    
+    static func initFromNib() -> PlayerDetailsView {
+        return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
     }
     
     fileprivate func playEpisode() {
@@ -103,10 +170,12 @@ class PlayerDetailsView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseBtn.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            miniPlayPauseBtn.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             enlargeEpisodeImageView()
         } else {
             player.pause()
             playPauseBtn.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            miniPlayPauseBtn.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             shrinkEpisodeImageView()
         }
     }
@@ -131,6 +200,9 @@ class PlayerDetailsView: UIView {
         seekToCurrentTime(delta: 15)
     }
     
+    @IBAction func handleMiniFastForward(_ sender: Any) {
+        seekToCurrentTime(delta: 15)
+    }
     @IBAction func handleVolumeChange(_ sender: UISlider) {
         player.volume = sender.value
     }
@@ -143,8 +215,9 @@ class PlayerDetailsView: UIView {
     
     
     @IBAction func dismiss(_ sender: Any) {
-        removeFromSuperview()
-       
+        let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBar?.minimizeDetailsView()
+        panGesture.isEnabled = true
     }
 }
 

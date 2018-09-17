@@ -21,8 +21,6 @@ class EpisodesController: UITableViewController {
     }
     
     fileprivate func fetchEpisodes() {
-        print("fetching episodez : ", podcast.feedUrl ?? "")
-        
         guard let feedUrl = podcast.feedUrl else {return}
         APIService.shared.fetchEpisodes(feedUrl: feedUrl) { (episodes) in
             self.episodes = episodes
@@ -50,17 +48,31 @@ class EpisodesController: UITableViewController {
     
     //MARK:- TableView
     
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityIndicator.color = .darkGray
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return episodes.isEmpty ? 200 : 0
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = self.episodes[indexPath.row]
-        print("trying to play episode: ", episode.title)
-        
-        let window = UIApplication.shared.keyWindow
-        
-        let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
-        playerDetailsView.episode = episode
-        
-        playerDetailsView.frame = view.frame
-        window?.addSubview(playerDetailsView)
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.maximizeDetailsView(episode: episode)
+//        let episode = self.episodes[indexPath.row]
+//        print("trying to play episode: ", episode.title)
+//
+//        let window = UIApplication.shared.keyWindow
+//
+//        let playerDetailsView = PlayerDetailsView.initFromNib()
+//        playerDetailsView.episode = episode
+//
+//        playerDetailsView.frame = view.frame
+//        window?.addSubview(playerDetailsView)
         
     }
     
