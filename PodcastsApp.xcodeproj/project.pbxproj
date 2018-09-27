@@ -15,6 +15,8 @@
 		2A84F7AE2142FB5A004ABB0C /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A84F7AD2142FB59004ABB0C /* RSSFeed.swift */; };
 		2A84F7B0214305CD004ABB0C /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A84F7AF214305CD004ABB0C /* PlayerDetailsView.swift */; };
 		2A84F7B2214305E5004ABB0C /* PlayerDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A84F7B1214305E5004ABB0C /* PlayerDetailsView.xib */; };
+		2A9EDC7521510F16009C9500 /* PlayerDetailsView+Gestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9EDC7421510F16009C9500 /* PlayerDetailsView+Gestures.swift */; };
+		2A9EDC7721511553009C9500 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9EDC7621511553009C9500 /* UIApplication.swift */; };
 		2AADF33E21483AC300F153FD /* PodcastsSearchingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AADF33D21483AC300F153FD /* PodcastsSearchingView.xib */; };
 		2ADA62BB214152AA00C9C365 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADA62BA214152AA00C9C365 /* Episode.swift */; };
 		2ADA62BE2141540400C9C365 /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADA62BC2141540400C9C365 /* EpisodeCell.swift */; };
@@ -61,6 +63,8 @@
 		2A84F7AD2142FB59004ABB0C /* RSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		2A84F7AF214305CD004ABB0C /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
 		2A84F7B1214305E5004ABB0C /* PlayerDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerDetailsView.xib; sourceTree = "<group>"; };
+		2A9EDC7421510F16009C9500 /* PlayerDetailsView+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlayerDetailsView+Gestures.swift"; sourceTree = "<group>"; };
+		2A9EDC7621511553009C9500 /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		2AADF33D21483AC300F153FD /* PodcastsSearchingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastsSearchingView.xib; sourceTree = "<group>"; };
 		2ADA62BA214152AA00C9C365 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		2ADA62BC2141540400C9C365 /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 				2ADA62BC2141540400C9C365 /* EpisodeCell.swift */,
 				2ADA62BD2141540400C9C365 /* EpisodeCell.xib */,
 				2A84F7AF214305CD004ABB0C /* PlayerDetailsView.swift */,
+				2A9EDC7421510F16009C9500 /* PlayerDetailsView+Gestures.swift */,
 				2A84F7B1214305E5004ABB0C /* PlayerDetailsView.xib */,
 				2AADF33D21483AC300F153FD /* PodcastsSearchingView.xib */,
 			);
@@ -154,6 +159,7 @@
 				2A84F7AB2142F9C2004ABB0C /* String.swift */,
 				2A84F7AD2142FB59004ABB0C /* RSSFeed.swift */,
 				2A13308221453E9700888290 /* CMTime.swift */,
+				2A9EDC7621511553009C9500 /* UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -325,6 +331,11 @@
 				TargetAttributes = {
 					2AF686A5213C084800223FDA = {
 						CreatedOnToolsVersion = 9.3;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					2AF686B9213C085C00223FDA = {
 						CreatedOnToolsVersion = 9.3;
@@ -471,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A9EDC7721511553009C9500 /* UIApplication.swift in Sources */,
 				2A84F7AE2142FB5A004ABB0C /* RSSFeed.swift in Sources */,
 				2A84F7B0214305CD004ABB0C /* PlayerDetailsView.swift in Sources */,
 				2AF686DB213C214000223FDA /* PodcastsSearchController.swift in Sources */,
@@ -478,6 +490,7 @@
 				2A13308321453E9700888290 /* CMTime.swift in Sources */,
 				2AF686AC213C084800223FDA /* ViewController.swift in Sources */,
 				2AFE3B5B213EB334003EB83A /* ApiService.swift in Sources */,
+				2A9EDC7521510F16009C9500 /* PlayerDetailsView+Gestures.swift in Sources */,
 				2A823BA021400A0E00B283A7 /* EpisodesController.swift in Sources */,
 				2AF686AA213C084800223FDA /* AppDelegate.swift in Sources */,
 				2ADA62BE2141540400C9C365 /* EpisodeCell.swift in Sources */,

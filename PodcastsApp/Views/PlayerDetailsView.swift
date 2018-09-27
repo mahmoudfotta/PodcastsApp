@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 class PlayerDetailsView: UIView {
 
@@ -53,10 +54,16 @@ class PlayerDetailsView: UIView {
             authorLabel.text = episode.author
             miniTitleLabel.text = episode.title
             playEpisode()
-            
+            setupNowPlayingInfo()
             guard let url = URL(string: episode.imageUrl ?? "") else {return}
             episodeImageView.sd_setImage(with: url, completed: nil)
-            miniEpisodeImageView.sd_setImage(with: url, completed: nil)
+            miniEpisodeImageView.sd_setImage(with: url) { (image, _, _, _) in
+                let image = self.episodeImageView.image ?? UIImage()
+                let artWork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_) -> UIImage in
+                    return image
+                })
+                MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = artWork
+            }
         }
     }
     
@@ -70,10 +77,8 @@ class PlayerDetailsView: UIView {
         let interval = CMTimeMake(1, 2)
         player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
             self?.currentTimeLabel.text = time.toDisplayString()
-            
             let durationTime = self?.player.currentItem?.duration
             self?.durationLabel.text = durationTime?.toDisplayString()
-            
             self?.updateCurrentTimeSlider()
             
         }
@@ -88,58 +93,104 @@ class PlayerDetailsView: UIView {
     
     var panGesture: UIPanGestureRecognizer!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    fileprivate func setupGestures() {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximize)))
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        addGestureRecognizer(panGesture)
-        observePlayerCurrentTime()
+        miniPlayerView.addGestureRecognizer(panGesture)
+        maximizedStackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDissmisalPan)))
+    }
+    
+    @objc func handleDissmisalPan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .changed {
+            let translation = gesture.translation(in: superview)
+            maximizedStackView.transform = CGAffineTransform(translationX: 0, y: translation.y)
+        } else if gesture.state == .ended {
+            let translation = gesture.translation(in: superview)
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.maximizedStackView.transform = .identity
+                if translation.y > 100 {
+                    let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+                    mainTabBar?.minimizeDetailsView()
+                }
+            })
+        }
+    }
+    
+    fileprivate func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let sessionErr {
+            print("Session error \(sessionErr)")
+        }
+    }
+    
+    fileprivate func setupRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
         
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.player.play()
+            self.playPauseBtn.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self.miniPlayPauseBtn.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self.setupElapsedTime()
+            return .success
+        }
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.player.pause()
+            self.playPauseBtn.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            self.miniPlayPauseBtn.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            self.setupElapsedTime()
+            return .success
+        }
+        
+        commandCenter.togglePlayPauseCommand.isEnabled = true
+        commandCenter.togglePlayPauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.handlePlayPause()
+            return .success
+        }
+    }
+    
+    fileprivate func setupElapsedTime() {
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+         MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+    }
+    
+    fileprivate func observeBoundrayTime() {
         let time = CMTimeMake(1, 3)
         let times = [NSValue(time: time)]
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
             self?.enlargeEpisodeImageView()
+            self?.setupLockScreenDuration()
         }
     }
     
-    @objc func handlePan(gesture: UIPanGestureRecognizer) {
-        if gesture.state == .changed {
-            handlePanChanged(gesture: gesture)
-        } else if gesture.state == .ended {
-            handlePanEnded(gesture: gesture)
-        }
+    fileprivate func setupLockScreenDuration() {
+        guard let currentItem = player.currentItem else {return}
+        let durationInSeconds = CMTimeGetSeconds(currentItem.duration)
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
     }
     
-    func handlePanChanged(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self.superview)
-        self.transform = CGAffineTransform(translationX: 0, y: translation.y)
-        self.miniPlayerView.alpha = 1 + translation.y / 200
-        self.maximizedStackView.alpha = -translation.y / 200
-    }
-    
-    func handlePanEnded(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self.superview)
-        let velocity = gesture.velocity(in: self.superview)
+    override func awakeFromNib() {
+        super.awakeFromNib()
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.transform = .identity
-            
-            if translation.y < -200 || velocity.y < -500 {
-                let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-                mainTabBar?.maximizeDetailsView(episode: nil)
-                gesture.isEnabled = false
-            } else {
-                self.miniPlayerView.alpha = 1
-                self.maximizedStackView.alpha = 0
-            }
-        })
+        setupRemoteControl()
+        setupAudioSession()
+        setupGestures()
+        observePlayerCurrentTime()
+        
+        observeBoundrayTime()
     }
     
-    @objc func handleTapMaximize() {
-        let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-        mainTabBar?.maximizeDetailsView(episode: nil)
-        panGesture.isEnabled = false
+    fileprivate func setupNowPlayingInfo() {
+        var nowPlayingInfo = [String: Any]()
+        nowPlayingInfo[MPMediaItemPropertyTitle] = episode.title
+        nowPlayingInfo[MPMediaItemPropertyArtist] = episode.author
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     static func initFromNib() -> PlayerDetailsView {
@@ -188,6 +239,7 @@ class PlayerDetailsView: UIView {
         let durationInSEconds = CMTimeGetSeconds(duration)
         let seekTimeInSeconds = Float64(percentage) * durationInSEconds
         let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, 1)
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = seekTimeInSeconds
         player.seek(to: seekTime)
     }
     
@@ -217,7 +269,6 @@ class PlayerDetailsView: UIView {
     @IBAction func dismiss(_ sender: Any) {
         let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
         mainTabBar?.minimizeDetailsView()
-        panGesture.isEnabled = true
     }
 }
 

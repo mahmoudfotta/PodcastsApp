@@ -51,7 +51,6 @@ class MainTabBarController: UITabBarController {
     
     //MARK:- setup functions
     let playerDetailsView = PlayerDetailsView.initFromNib()
-
     var maximizedTopAnchorConstraint: NSLayoutConstraint!
     var minimizedTopAnchorConstraint: NSLayoutConstraint!
     var bottomAnchorConstraint: NSLayoutConstraint!
