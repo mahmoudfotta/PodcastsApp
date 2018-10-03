@@ -14,6 +14,16 @@ class FavoritePodcastCell: UICollectionViewCell {
     let nameLabel = UILabel()
     let artistNameLabel = UILabel()
     
+    var podcast: Podcast! {
+        didSet {
+            nameLabel.text = podcast.trackName
+            artistNameLabel.text = podcast.artistName
+            
+            let url = URL(string: podcast.artworkUrl600 ?? "")
+            imageView.sd_setImage(with: url)
+        }
+    }
+    
     fileprivate func stylizeUi() {
         nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         nameLabel.text = "Podcast Name"
