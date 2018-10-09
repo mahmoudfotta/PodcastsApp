@@ -42,19 +42,23 @@ class EpisodesController: UITableViewController {
     //MARK:- setup work
     
     fileprivate func setupNavigationBarButtons() {
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavorite)),
-            UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcast))
-        ]
+        
+        let savedPodcasts = UserDefaults.standard.savedPodcasts()
+        let hasFavorited = savedPodcasts.index(where: { $0.artistName == self.podcast.artistName && $0.trackName == self.podcast.trackName }) != nil
+        
+        if hasFavorited {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "35 heart"), style: .plain, target: nil, action: nil)
+        } else {
+            navigationItem.rightBarButtonItems = [
+                UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavorite))
+            ]
+        }
+        
     }
     
     @objc func handleFetchSavedPodcast() {
         guard let data = UserDefaults.standard.data(forKey: UserDefaults.favoritedPodcastKey) else {return}
         let savedPodcasts = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Podcast]
-        savedPodcasts?.forEach({ (podcast) in
-            print(podcast.trackName, podcast.artistName)
-        })
-        
     }
     
     @objc func handleSaveFavorite() {
@@ -63,6 +67,14 @@ class EpisodesController: UITableViewController {
         listOfPodcasts.append(podcast)
         let data = NSKeyedArchiver.archivedData(withRootObject: listOfPodcasts)
         UserDefaults.standard.set(data, forKey: UserDefaults.favoritedPodcastKey)
+        
+        showBadgeHighlight()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "35 heart"), style: .plain, target: nil, action: nil)
+
+    }
+    
+    fileprivate func showBadgeHighlight() {
+        UIApplication.mainTabBarController()?.viewControllers?[1].tabBarItem.badgeValue = "New"
     }
     
     fileprivate func setupTableView() {
@@ -72,6 +84,15 @@ class EpisodesController: UITableViewController {
     }
     
     //MARK:- TableView
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
+            print("Downloading episode .....")
+            let episode = self.episodes[indexPath.row]
+            UserDefaults.standard.downloadEpisode(episode: episode)
+        }
+        return [downloadAction]
+    }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
