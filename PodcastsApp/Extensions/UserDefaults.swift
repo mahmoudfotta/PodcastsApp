@@ -16,8 +16,7 @@ extension UserDefaults {
   func deleteEpisode(episode: Episode) {
     let savedEpisodes = downloadedEpisodes()
     let filteredEpisodes = savedEpisodes.filter { (e) -> Bool in
-      // you should use episode.collectionId to be safer with deletes
-      return e.title != episode.title
+      return e.title != episode.title && e.author != episode.author
     }
     
     do {
@@ -31,8 +30,7 @@ extension UserDefaults {
   func downloadEpisode(episode: Episode) {
     do {
       var episodes = downloadedEpisodes()
-      //            episodes.append(episode)
-      //insert episode at the front of the list
+      
       episodes.insert(episode, at: 0)
       let data = try JSONEncoder().encode(episodes)
       UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpidodesKey)

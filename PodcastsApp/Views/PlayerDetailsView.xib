@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -64,7 +63,7 @@
                             </subviews>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" red="1" green="1" blue="0.99039942781690138" alpha="0.84251210387323938" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="r9h-eN-a8Q" secondAttribute="bottom" constant="8" id="6Uk-CA-zZ1"/>
                         <constraint firstItem="r9h-eN-a8Q" firstAttribute="leading" secondItem="WIe-eu-pNZ" secondAttribute="leading" constant="8" id="NCS-tS-kBo"/>
@@ -128,16 +127,16 @@
                             </constraints>
                         </stackView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Episode title" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRC-Yv-CUk">
-                            <rect key="frame" x="0.0" y="437" width="315" height="24"/>
+                            <rect key="frame" x="0.0" y="437" width="315" height="39"/>
                             <constraints>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="oVo-6f-QTq"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="oVo-6f-QTq"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JLY-39-SeR">
-                            <rect key="frame" x="0.0" y="466" width="315" height="20"/>
+                            <rect key="frame" x="0.0" y="481" width="315" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="XPT-63-cn3"/>
                             </constraints>
@@ -146,15 +145,16 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="QVa-Qt-ejv">
-                            <rect key="frame" x="0.0" y="491" width="315" height="85"/>
+                            <rect key="frame" x="0.0" y="506" width="315" height="70"/>
                             <subviews>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M2a-wg-1h7">
-                                    <rect key="frame" x="0.0" y="0.0" width="46" height="85"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M2a-wg-1h7">
+                                    <rect key="frame" x="0.0" y="0.0" width="46" height="70"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbF-Se-VFk">
-                                    <rect key="frame" x="46" y="0.0" width="44" height="85"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbF-Se-VFk">
+                                    <rect key="frame" x="46" y="0.0" width="44" height="70"/>
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="70" id="20H-3J-cuL"/>
                                         <constraint firstAttribute="width" constant="44" id="O7Z-5u-XWi"/>
                                     </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -163,24 +163,24 @@
                                         <action selector="handleRewined:" destination="iN0-l3-epB" eventType="touchUpInside" id="obC-if-THg"/>
                                     </connections>
                                 </button>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tr6-7x-Noo">
-                                    <rect key="frame" x="90" y="0.0" width="45.5" height="85"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tr6-7x-Noo">
+                                    <rect key="frame" x="90" y="0.0" width="46" height="70"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="taJ-k8-9z8">
-                                    <rect key="frame" x="135.5" y="0.0" width="54" height="85"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="taJ-k8-9z8">
+                                    <rect key="frame" x="136" y="0.0" width="54" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="54" id="jjK-Op-rE4"/>
                                     </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" title="Button" image="play"/>
                                 </button>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DUO-zk-uys">
-                                    <rect key="frame" x="189.5" y="0.0" width="36" height="85"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DUO-zk-uys">
+                                    <rect key="frame" x="190" y="0.0" width="36" height="70"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0s-oI-5wD">
-                                    <rect key="frame" x="225.5" y="0.0" width="44" height="85"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0s-oI-5wD">
+                                    <rect key="frame" x="226" y="0.0" width="44" height="70"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="c3m-Ai-bJk"/>
                                     </constraints>
@@ -190,11 +190,17 @@
                                         <action selector="handleFastForward:" destination="iN0-l3-epB" eventType="touchUpInside" id="hh6-mx-baL"/>
                                     </connections>
                                 </button>
-                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4UT-Wy-qva">
-                                    <rect key="frame" x="269.5" y="0.0" width="45.5" height="85"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4UT-Wy-qva">
+                                    <rect key="frame" x="270" y="0.0" width="45" height="70"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
+                            <constraints>
+                                <constraint firstItem="4UT-Wy-qva" firstAttribute="leading" secondItem="B0s-oI-5wD" secondAttribute="trailing" id="5kx-t3-uWy"/>
+                                <constraint firstItem="tr6-7x-Noo" firstAttribute="leading" secondItem="gbF-Se-VFk" secondAttribute="trailing" id="ToB-rl-zO4"/>
+                                <constraint firstItem="B0s-oI-5wD" firstAttribute="leading" secondItem="DUO-zk-uys" secondAttribute="trailing" id="UWd-Ot-c0v"/>
+                                <constraint firstItem="gbF-Se-VFk" firstAttribute="leading" secondItem="QVa-Qt-ejv" secondAttribute="leading" constant="46" id="tfn-9D-Cxd"/>
+                            </constraints>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DGV-S8-I6t">
                             <rect key="frame" x="0.0" y="581" width="315" height="34"/>
@@ -257,11 +263,11 @@
     </objects>
     <resources>
         <image name="appicon" width="60" height="60"/>
-        <image name="fastforward15" width="45" height="45"/>
-        <image name="max_volume" width="32" height="32"/>
-        <image name="muted_volume" width="32" height="32"/>
+        <image name="fastforward15" width="45.5" height="45.5"/>
+        <image name="max_volume" width="32.5" height="32.5"/>
+        <image name="muted_volume" width="32.5" height="32.5"/>
         <image name="pause" width="57" height="57"/>
         <image name="play" width="59" height="59"/>
-        <image name="rewind15" width="45" height="45"/>
+        <image name="rewind15" width="45.5" height="45.5"/>
     </resources>
 </document>

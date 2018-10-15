@@ -22,7 +22,6 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
         setupTableView()
         setupSearchBar()
         
-        searchBar(searchController.searchBar, textDidChange: "voong")
     }
     
     //MARK:- setup work
@@ -63,7 +62,7 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return podcasts.isEmpty && searchController.searchBar.text?.isEmpty == false ? 200 : 0
+        return podcasts.isEmpty == true && searchController.searchBar.text?.isEmpty == false ? 200 : 0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

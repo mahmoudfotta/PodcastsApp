@@ -24,7 +24,7 @@ class FavoritesController: UICollectionViewController, UICollectionViewDelegateF
         super.viewWillAppear(animated)
         podcasts = UserDefaults.standard.savedPodcasts()
         collectionView?.reloadData()
-        UIApplication.mainTabBarController()?.viewControllers?[1].tabBarItem.badgeValue = nil
+        UIApplication.mainTabBarController()?.viewControllers?[0].tabBarItem.badgeValue = nil
     }
     
     fileprivate func setupCollectionView() {
