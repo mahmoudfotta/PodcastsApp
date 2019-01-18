@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0DAC9F4E2174ADB70006F538 /* NSNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC9F4D2174ADB70006F538 /* NSNotification.swift */; };
+		0DF4EF5D21F277CE0019744C /* FavoritesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF4EF5C21F277CD0019744C /* FavoritesDataSource.swift */; };
+		0DF4EF6021F27D7A0019744C /* FavoritesFlowLayoutDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF4EF5F21F27D7A0019744C /* FavoritesFlowLayoutDelegate.swift */; };
 		2A13308321453E9700888290 /* CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A13308221453E9700888290 /* CMTime.swift */; };
 		2A823B9C213FE26C00B283A7 /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A823B9B213FE26C00B283A7 /* PodcastCell.xib */; };
 		2A823B9E213FE60100B283A7 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A823B9D213FE60100B283A7 /* PodcastCell.swift */; };
@@ -61,6 +63,8 @@
 
 /* Begin PBXFileReference section */
 		0DAC9F4D2174ADB70006F538 /* NSNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSNotification.swift; sourceTree = "<group>"; };
+		0DF4EF5C21F277CD0019744C /* FavoritesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesDataSource.swift; sourceTree = "<group>"; };
+		0DF4EF5F21F27D7A0019744C /* FavoritesFlowLayoutDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesFlowLayoutDelegate.swift; sourceTree = "<group>"; };
 		2A13308221453E9700888290 /* CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CMTime.swift; sourceTree = "<group>"; };
 		2A823B9B213FE26C00B283A7 /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
 		2A823B9D213FE60100B283A7 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
@@ -148,6 +152,22 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		0DF4EF5B21F2779D0019744C /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				0DF4EF5C21F277CD0019744C /* FavoritesDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		0DF4EF5E21F27BFF0019744C /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				0DF4EF5F21F27D7A0019744C /* FavoritesFlowLayoutDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
 		2A823B9A213FE22F00B283A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +227,8 @@
 				2AF686DC213C21F300223FDA /* Models */,
 				2A823B9A213FE22F00B283A7 /* Views */,
 				2AF686D9213C20FF00223FDA /* Controllers */,
+				0DF4EF5B21F2779D0019744C /* DataSources */,
+				0DF4EF5E21F27BFF0019744C /* Delegates */,
 				2AF686A9213C084800223FDA /* AppDelegate.swift */,
 				2AF686AB213C084800223FDA /* ViewController.swift */,
 				2AF686AD213C084800223FDA /* Main.storyboard */,
@@ -503,6 +525,7 @@
 				2A946DC8216293EF00EB9D0D /* FavoritePodcastCell.swift in Sources */,
 				2A9EDC7721511553009C9500 /* UIApplication.swift in Sources */,
 				2A84F7AE2142FB5A004ABB0C /* RSSFeed.swift in Sources */,
+				0DF4EF6021F27D7A0019744C /* FavoritesFlowLayoutDelegate.swift in Sources */,
 				2A84F7B0214305CD004ABB0C /* PlayerDetailsView.swift in Sources */,
 				0DAC9F4E2174ADB70006F538 /* NSNotification.swift in Sources */,
 				2A946DC621628C7100EB9D0D /* FavoritesController.swift in Sources */,
@@ -516,6 +539,7 @@
 				2AF686AA213C084800223FDA /* AppDelegate.swift in Sources */,
 				2AECB6962164F46D008502AE /* UserDefaults.swift in Sources */,
 				2ADA62BE2141540400C9C365 /* EpisodeCell.swift in Sources */,
+				0DF4EF5D21F277CE0019744C /* FavoritesDataSource.swift in Sources */,
 				2AF45B8D2168B731007F51F3 /* DownloadsController.swift in Sources */,
 				2AF686D8213C098F00223FDA /* MainTabBarController.swift in Sources */,
 				2AF686DE213C221400223FDA /* Podcast.swift in Sources */,
