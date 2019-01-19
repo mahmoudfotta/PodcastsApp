@@ -12,6 +12,7 @@ import FeedKit
 class EpisodesController: UITableViewController {
   
   fileprivate var cellId = "cellId"
+  var dataSource = EpisodesDataSource()
   
   var podcast: Podcast! {
     didSet {
@@ -23,16 +24,13 @@ class EpisodesController: UITableViewController {
   fileprivate func fetchEpisodes() {
     guard let feedUrl = podcast.feedUrl else {return}
     APIService.shared.fetchEpisodes(feedUrl: feedUrl) { (episodes) in
-      self.episodes = episodes
+      self.dataSource.episodes = episodes
       DispatchQueue.main.async {
         self.tableView.reloadData()
       }
     }
   }
-  
-  
-  var episodes = [Episode]()
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
@@ -70,7 +68,6 @@ class EpisodesController: UITableViewController {
     
     showBadgeHighlight()
     navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "35 heart"), style: .plain, target: nil, action: nil)
-    
   }
   
   fileprivate func showBadgeHighlight() {
@@ -81,6 +78,7 @@ class EpisodesController: UITableViewController {
     tableView.tableFooterView = UIView()
     let nib = UINib(nibName: "EpisodeCell", bundle: nil)
     tableView.register(nib, forCellReuseIdentifier: cellId)
+    tableView.dataSource = dataSource
   }
   
   //MARK:- TableView
@@ -88,7 +86,7 @@ class EpisodesController: UITableViewController {
   override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
       print("Downloading episode .....")
-      let episode = self.episodes[indexPath.row]
+      let episode = self.dataSource.episode(at: indexPath.row)
       let downloadEdepisodes = UserDefaults.standard.downloadedEpisodes()
       if let _ = downloadEdepisodes.firstIndex(where: {
         $0.title == episode.title && $0.author == episode.author
@@ -114,26 +112,14 @@ class EpisodesController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return episodes.isEmpty ? 200 : 0
+    return dataSource.episodes.isEmpty ? 200 : 0
   }
   
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let episode = self.episodes[indexPath.row]
+    let episode = dataSource.episode(at: indexPath.row)
     let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-    mainTabBarController?.maximizeDetailsView(episode: episode, playListEpisodes: episodes)
+    mainTabBarController?.maximizeDetailsView(episode: episode, playListEpisodes: dataSource.episodes)
     
-  }
-  
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return episodes.count
-  }
-  
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
-    let episode = episodes[indexPath.row]
-    cell.episode = episode
-    
-    return cell
   }
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
