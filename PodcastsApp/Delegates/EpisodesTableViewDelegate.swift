@@ -18,18 +18,7 @@ class EpisodesTableViewDelegate: NSObject, UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
-      guard let episode = self.episodes?[indexPath.row] else { return }
-      let downloadEdepisodes = UserDefaults.standard.downloadedEpisodes()
-      if let _ = downloadEdepisodes.firstIndex(where: {
-        $0.title == episode.title && $0.author == episode.author
-      }) {
-        print("episode already downloaded")
-        self.alreadyDownloadedAction?()
-      } else {
-        UIApplication.mainTabBarController()?.viewControllers?[2].tabBarItem.badgeValue = "New"
-        UserDefaults.standard.downloadEpisode(episode: episode)
-        APIService.shared.downlodEpisode(episode: episode)
-      }
+      self.downloadEpisode(at: indexPath)
     }
     return [downloadAction]
   }
@@ -54,5 +43,20 @@ class EpisodesTableViewDelegate: NSObject, UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 134
+  }
+  
+  func downloadEpisode(at indexPath: IndexPath) {
+    guard let episode = self.episodes?[indexPath.row] else { return }
+    let downloadEdepisodes = UserDefaults.standard.downloadedEpisodes()
+    if let _ = downloadEdepisodes.firstIndex(where: {
+      $0.title == episode.title && $0.author == episode.author
+    }) {
+      print("episode already downloaded")
+      self.alreadyDownloadedAction?()
+    } else {
+      UIApplication.mainTabBarController()?.viewControllers?[2].tabBarItem.badgeValue = "New"
+      UserDefaults.standard.downloadEpisode(episode: episode)
+      APIService.shared.downlodEpisode(episode: episode)
+    }
   }
 }
