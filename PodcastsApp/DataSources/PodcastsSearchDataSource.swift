@@ -17,6 +17,7 @@ class PodcastsSearchDataSource: NSObject, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // swiftlint:disable:next force_cast
     let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! PodcastCell
     let podcast = podcasts[indexPath.row]
     cell.podcast = podcast

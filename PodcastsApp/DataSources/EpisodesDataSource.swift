@@ -17,6 +17,7 @@ class EpisodesDataSource: NSObject, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // swiftlint:disable:next force_cast
     let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
     let episode = episodes[indexPath.row]
     cell.episode = episode

@@ -9,12 +9,13 @@
 import UIKit
 import Alamofire
 
-class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
+class PodcastsSearchController: UITableViewController {
   var dataSource = PodcastsSearchDataSource()
   let cellId = "cellId"
   let searchController = UISearchController(searchResultsController: nil)
   var delegate: PodcastsSearchTableViewDelegate!
-  
+  var timer: Timer?
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
@@ -22,28 +23,12 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
   }
   
   //MARK:- setup work
-  
   fileprivate func setupSearchBar() {
     definesPresentationContext = true
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
     searchController.dimsBackgroundDuringPresentation = false
     searchController.searchBar.delegate = self
-  }
-  
-  var timer: Timer?
-  
-  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-    dataSource.podcasts = []
-    tableView.reloadData()
-    timer?.invalidate()
-    timer = Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false, block: { (_) in
-      APIService.shared.fetchPodcast(searchText: searchText) { (podcasts) in
-        self.dataSource.podcasts = podcasts
-        self.delegate.podcasts = podcasts
-        self.tableView.reloadData()
-      }
-    })
   }
   
   fileprivate func setupTableView() {
@@ -61,5 +46,20 @@ class PodcastsSearchController: UITableViewController, UISearchBarDelegate {
     let episodesController = EpisodesController()
     episodesController.podcast = dataSource.podcasts[indexPath.row]
     self.navigationController?.pushViewController(episodesController, animated: true)
+  }
+}
+
+extension PodcastsSearchController: UISearchBarDelegate {
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    dataSource.podcasts = []
+    tableView.reloadData()
+    timer?.invalidate()
+    timer = Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false, block: { (_) in
+      APIService.shared.fetchPodcast(searchText: searchText) { (podcasts) in
+        self.dataSource.podcasts = podcasts
+        self.delegate.podcasts = podcasts
+        self.tableView.reloadData()
+      }
+    })
   }
 }

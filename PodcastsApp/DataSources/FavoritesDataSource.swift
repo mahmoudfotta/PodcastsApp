@@ -9,7 +9,6 @@
 import UIKit
 
 class FavoritesDataSource: NSObject, UICollectionViewDataSource {
-  
   var podcasts = UserDefaults.standard.savedPodcasts()
   fileprivate let cellId = "cellId"
   
@@ -18,6 +17,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    // swiftlint:disable:next force_cast
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FavoritePodcastCell
     cell.podcast = podcasts[indexPath.item]
     return cell
@@ -35,4 +35,3 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     podcasts = UserDefaults.standard.savedPodcasts()
   }
 }
-

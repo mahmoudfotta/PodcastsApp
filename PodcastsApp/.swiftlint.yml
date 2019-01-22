@@ -1,0 +1,3 @@
+line_length: 160
+ignores_empty_lines: true
+ignores_comments: true

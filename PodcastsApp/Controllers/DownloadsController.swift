@@ -9,14 +9,20 @@
 import UIKit
 
 class DownloadsController: UITableViewController {
-  
   fileprivate let cellId = "cellId"
-  var episodes = UserDefaults.standard.downloadedEpisodes()
+  var dataSource = DownloadsDataSource()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
     setupObserver()
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    dataSource.episodes = UserDefaults.standard.downloadedEpisodes()
+    tableView.reloadData()
+    UIApplication.mainTabBarController()?.viewControllers?[2].tabBarItem.badgeValue = nil
   }
   
   fileprivate func setupObserver() {
@@ -26,10 +32,10 @@ class DownloadsController: UITableViewController {
   
   @objc fileprivate func handleDownloadCompleted(notification: Notification) {
     guard let episodeDownloadComplete = notification.object as? APIService.EpisodeDownloadCompleteTuple else {return}
-    guard let index = self.episodes.firstIndex(where: {
+    guard let index = dataSource.episodes.firstIndex(where: {
       $0.title == episodeDownloadComplete.episodeTitle
     }) else {return}
-    self.episodes[index].fileUrl = episodeDownloadComplete.fileUrl
+    dataSource.episodes[index].fileUrl = episodeDownloadComplete.fileUrl
   }
   
   @objc fileprivate func handleDownloadProgress(notification: Notification) {
@@ -37,7 +43,7 @@ class DownloadsController: UITableViewController {
     guard let progress = userInfo["progress"] as? Double else {return}
     guard let title = userInfo["title"] as? String else {return}
     
-    guard let index = self.episodes.firstIndex(where: {
+    guard let index = dataSource.episodes.firstIndex(where: {
       $0.title == title
     }) else {return}
     
@@ -49,51 +55,29 @@ class DownloadsController: UITableViewController {
     }
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    episodes = UserDefaults.standard.downloadedEpisodes()
-    tableView.reloadData()
-    UIApplication.mainTabBarController()?.viewControllers?[2].tabBarItem.badgeValue = nil
-  }
-  
   //MARK:- setup
   
   fileprivate func setupTableView() {
     let nib = UINib(nibName: "EpisodeCell", bundle: nil)
     tableView.register(nib, forCellReuseIdentifier: cellId)
+    tableView.dataSource = dataSource
   }
-  
-  //MARK:= UITableview
-  
+
+}
+
+extension DownloadsController {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let episode = episodes[indexPath.row]
+    let episode = dataSource.episodes[indexPath.row]
     if episode.fileUrl != nil {
-      UIApplication.mainTabBarController()?.maximizeDetailsView(episode: episode, playListEpisodes: self.episodes)
+      UIApplication.mainTabBarController()?.maximizeDetailsView(episode: episode, playListEpisodes: dataSource.episodes)
     } else {
       let alertController = UIAlertController(title: "File url not found", message: "Can't find local file, play using stream url instead", preferredStyle: .actionSheet)
       alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (_) in
-        UIApplication.mainTabBarController()?.maximizeDetailsView(episode: episode, playListEpisodes: self.episodes)
+        UIApplication.mainTabBarController()?.maximizeDetailsView(episode: episode, playListEpisodes: self.dataSource.episodes)
       }))
       alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
       present(alertController, animated: true)
     }
-  }
-  
-  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    let episode = self.episodes[indexPath.row]
-    episodes.remove(at: indexPath.row)
-    tableView.deleteRows(at: [indexPath], with: .automatic)
-    UserDefaults.standard.deleteEpisode(episode: episode)
-  }
-  
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return episodes.count
-  }
-  
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
-    cell.episode = episodes[indexPath.row]
-    return cell
   }
   
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

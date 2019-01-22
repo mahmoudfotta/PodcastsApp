@@ -9,7 +9,6 @@
 import UIKit
 
 class FavoritesController: UICollectionViewController {
-  
   fileprivate let cellId = "cellId"
   var dataSource = FavoritesDataSource()
   var flowDelegate: FavoritesFlowLayoutDelegate?

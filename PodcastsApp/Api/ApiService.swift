@@ -35,7 +35,7 @@ class APIService {
         do {
           let data = try JSONEncoder().encode(downloadedEpisodes)
           UserDefaults.standard.set(data, forKey: UserDefaults.downloadedEpidodesKey)
-
+          
         } catch let err {
           print(err)
         }

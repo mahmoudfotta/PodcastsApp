@@ -11,7 +11,6 @@ import AVKit
 import MediaPlayer
 
 class PlayerDetailsView: UIView {
-  
   @IBOutlet weak var currentTimeSlider: UISlider!
   @IBOutlet weak var durationLabel: UILabel!
   @IBOutlet weak var currentTimeLabel: UILabel!
@@ -33,7 +32,6 @@ class PlayerDetailsView: UIView {
   
   @IBOutlet weak var miniPlayerView: UIView!
   @IBOutlet weak var maximizedStackView: UIStackView!
-  
   @IBOutlet weak var miniTitleLabel: UILabel!
   @IBOutlet weak var miniEpisodeImageView: UIImageView!
   @IBOutlet weak var miniFastForwardBtn: UIButton! {
@@ -244,7 +242,6 @@ class PlayerDetailsView: UIView {
   
   override func awakeFromNib() {
     super.awakeFromNib()
-    
     setupRemoteControl()
     setupGestures()
     setupInterruptionObserver()
@@ -355,10 +352,6 @@ class PlayerDetailsView: UIView {
     mainTabBar?.minimizeDetailsView()
   }
 }
-
-
-
-
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
