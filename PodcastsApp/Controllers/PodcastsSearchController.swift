@@ -13,9 +13,9 @@ class PodcastsSearchController: UITableViewController {
   var dataSource = PodcastsSearchDataSource()
   let cellId = "cellId"
   let searchController = UISearchController(searchResultsController: nil)
-  var delegate: PodcastsSearchTableViewDelegate!
   var timer: Timer?
-
+  let indicator = IndicatorViewController()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
@@ -36,10 +36,6 @@ class PodcastsSearchController: UITableViewController {
     let nib = UINib(nibName: "PodcastCell", bundle: nil)
     tableView.register(nib, forCellReuseIdentifier: cellId)
     tableView.dataSource = dataSource
-    delegate = PodcastsSearchTableViewDelegate(searchController: searchController, cellTapped: {[weak self] (indexPath) in
-      self?.podcastTapped(at: indexPath)
-    })
-    tableView.delegate = delegate
   }
   
   func podcastTapped(at indexPath: IndexPath) {
@@ -49,16 +45,31 @@ class PodcastsSearchController: UITableViewController {
   }
 }
 
+extension PodcastsSearchController {
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    podcastTapped(at: indexPath)
+  }
+  
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 132
+  }
+}
+
 extension PodcastsSearchController: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     dataSource.podcasts = []
     tableView.reloadData()
     timer?.invalidate()
-    timer = Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false, block: { (_) in
+    if searchText.isEmpty {
+      indicator.remove()
+    } else {
+      add(indicator)
+    }
+    timer = Timer.scheduledTimer(withTimeInterval: 0.6, repeats: false, block: {[weak self] (_) in
       APIService.shared.fetchPodcast(searchText: searchText) { (podcasts) in
-        self.dataSource.podcasts = podcasts
-        self.delegate.podcasts = podcasts
-        self.tableView.reloadData()
+        self?.dataSource.podcasts = podcasts
+        self?.indicator.remove()
+        self?.tableView.reloadData()
       }
     })
   }

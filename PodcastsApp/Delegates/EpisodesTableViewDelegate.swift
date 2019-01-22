@@ -23,17 +23,6 @@ class EpisodesTableViewDelegate: NSObject, UITableViewDelegate {
     return [downloadAction]
   }
   
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-    activityIndicator.color = .darkGray
-    activityIndicator.startAnimating()
-    return activityIndicator
-  }
-  
-  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return episodes?.isEmpty ?? true ? 200 : 0
-  }
-  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let episodes = episodes else { return }
     let episode = episodes[indexPath.row]

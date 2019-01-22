@@ -14,6 +14,7 @@ class EpisodesController: UITableViewController {
   var dataSource = EpisodesDataSource()
   var delegate: EpisodesTableViewDelegate!
   
+  
   var podcast: Podcast! {
     didSet {
       navigationItem.title = podcast.trackName
@@ -21,21 +22,23 @@ class EpisodesController: UITableViewController {
     }
   }
   
-  fileprivate func fetchEpisodes() {
-    guard let feedUrl = podcast.feedUrl else {return}
-    APIService.shared.fetchEpisodes(feedUrl: feedUrl) { (episodes) in
-      self.dataSource.episodes = episodes
-      DispatchQueue.main.async {
-        self.delegate.episodes = self.dataSource.episodes
-        self.tableView.reloadData()
-      }
-    }
-  }
-
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTableView()
     setupNavigationBarButtons()
+  }
+  
+  fileprivate func fetchEpisodes() {
+    guard let feedUrl = podcast.feedUrl else {return}
+    let indicatorController = IndicatorViewController()
+    add(indicatorController)
+    APIService.shared.fetchEpisodes(feedUrl: feedUrl) { (episodes) in
+      self.dataSource.episodes = episodes
+      DispatchQueue.main.async {
+        indicatorController.remove()
+        self.tableView.reloadData()
+      }
+    }
   }
   
   //MARK:- setup work
