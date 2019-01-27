@@ -79,7 +79,6 @@ class PlayerDetailsView: UIView {
       let durationTime = self?.player.currentItem?.duration
       self?.durationLabel.text = durationTime?.toDisplayString()
       self?.updateCurrentTimeSlider()
-      
     }
   }
   
@@ -97,22 +96,6 @@ class PlayerDetailsView: UIView {
     panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     miniPlayerView.addGestureRecognizer(panGesture)
     maximizedStackView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleDissmisalPan)))
-  }
-  
-  @objc func handleDissmisalPan(gesture: UIPanGestureRecognizer) {
-    if gesture.state == .changed {
-      let translation = gesture.translation(in: superview)
-      maximizedStackView.transform = CGAffineTransform(translationX: 0, y: translation.y)
-    } else if gesture.state == .ended {
-      let translation = gesture.translation(in: superview)
-      UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-        self.maximizedStackView.transform = .identity
-        if translation.y > 100 {
-          let mainTabBar = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-          mainTabBar?.minimizeDetailsView()
-        }
-      })
-    }
   }
   
   fileprivate func setupAudioSession() {

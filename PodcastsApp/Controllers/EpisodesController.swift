@@ -32,11 +32,12 @@ class EpisodesController: UITableViewController {
     guard let feedUrl = podcast.feedUrl else {return}
     let indicatorController = IndicatorViewController()
     add(indicatorController)
-    APIService.shared.fetchEpisodes(feedUrl: feedUrl) { (episodes) in
-      self.dataSource.episodes = episodes
-      DispatchQueue.main.async {
+    APIService.shared.fetchEpisodes(feedUrl: feedUrl) {[weak self] (episodes) in
+      DispatchQueue.main.async { [weak self] in
+        self?.dataSource.episodes = episodes
+        self?.delegate.episodes = episodes
         indicatorController.remove()
-        self.tableView.reloadData()
+        self?.tableView.reloadData()
       }
     }
   }
